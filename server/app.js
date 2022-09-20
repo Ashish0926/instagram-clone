@@ -3,6 +3,10 @@ const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
 const {MONGODB_URI} = require("../keys");
+const router = require("./routes/auth")
+
+app.use(express.json());
+app.use(router);
 
 mongoose.connect(MONGODB_URI)
 .then((db) => {
