@@ -4,42 +4,47 @@ const router = express.Router();
 const mongoose = require("mongoose");
 require("../models/user");
 const User = mongoose.model("User");
+const bcrypt = require("bcryptjs");
 
 router.get("/", (req, res) => {
-    res.send("hello");
+  res.send("hello");
 });
 
 router.post("/signup", (req, res) => {
-    //console.log(req.body);
-    const {name, email, password} = req.body;
-    if(!email || !name || !password){
-        res.status(400).json({error: "please add the fields"});
+  //console.log(req.body);
+  const { name, email, password } = req.body;
+  if (!email || !name || !password) {
+    res.status(400).json({ error: "please add the fields" });
+  }
+  User.findOne({ email: email }).then((savedUser) => {
+    if (savedUser) {
+      return res.status(400).json("user already exists with this email ID");
     }
-    User.findOne({email: email})
-    .then((savedUser) => {
-        if(savedUser){
-            return res.status(400).json("user already exists with this email ID");
-
-        }
+    // encrypt the user password
+    bcrypt
+      .hash(password, 12)
+      .then((hashedPassword) => {
         // create a new user
         const user = new User({
-            name,
-            email,
-            password
+          name,
+          email,
+          password: hashedPassword
         });
 
         // save user to the database
-        user.save()
-        .then((saved) => {
-            res.json({message: "user saved successfully"});
-        })
-        .catch((err) => {
+        user
+          .save()
+          .then((saved) => {
+            res.json({ message: "user saved successfully" });
+          })
+          .catch((err) => {
             console.log(err);
-        })
-    })
-    .catch((err) => {
+          });
+      })
+      .catch((err) => {
         console.log(err);
-    })
+      });
+  });
 });
 
 module.exports = router;
