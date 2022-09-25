@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 require("../models/user");
 const User = mongoose.model("User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const {JWT_KEY} = require("../../keys");
 
 router.get("/", (req, res) => {
   res.send("hello");
@@ -45,6 +47,36 @@ router.post("/signup", (req, res) => {
         console.log(err);
       });
   });
+});
+
+router.post("/signin", (req, res) => {
+  const {email, password} = req.body;
+  if(!email || !password){
+    res.status(422).json({error: "please add email or password"});
+  }
+  User.findOne({email: email})
+  .then(savedUser => {
+    if(!savedUser){
+      return res.json({message: "user does not exits in our database. Please signup to continue!"});
+    }
+    bcrypt.compare(password, savedUser.password)
+    .then((doMatch) => {
+      if(doMatch) {
+        // res.json({message: "successfully signed in"});
+        const token = jwt.sign({id: savedUser._id}, JWT_KEY);
+        res.json({token: token});
+
+      }else{
+        res.json({message: "incorrect password"});
+      }
+    })
+    .catch((err) =>{
+      console.log(err);
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 });
 
 module.exports = router;
