@@ -16,10 +16,11 @@ module.exports = (req, res, next) => {
         if(err){
             return res.status(401).json({error: "you must login"});
         }
-        const {_id} = payload;
-        User.findById(_id).then((userData) => {
+        const {id} = payload;
+        //console.log(payload);
+        User.findById(id).then((userData) => {
             req.user = userData;
+            next();
         })
-        next();
     })
 }
