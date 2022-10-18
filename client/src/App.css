@@ -33,6 +33,7 @@ a {
   margin-top: 40px;
   font-family:sans-serif;
   font-weight: 500;
+  border-radius: 15px !important;
   color: white !important;
 }
 
@@ -47,4 +48,14 @@ a {
 
 #have-account {
   margin: 40px auto 20px;
+}
+
+#gallery-img {
+  width: 150px;
+  height: 180px;
+}
+
+.home-card {
+  max-width: 500px;
+  height: max-content;
 }
