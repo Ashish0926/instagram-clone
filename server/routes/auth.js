@@ -10,7 +10,7 @@ const {JWT_KEY} = require("../../keys");
 const requireLogin = require("../middleware/requireLogin");
 
 router.get("/", (req, res) => {
-  res.send("hello");
+  res.send("welcome to the server");
 });
 
 router.get("/protected", requireLogin, (req, res) => {
