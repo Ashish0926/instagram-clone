@@ -17,7 +17,6 @@ const Signup = () => {
   const [confirm, setConfirm] = useState("");
 
   function signup() {
-    <Redirect to='/profile' />
     if(!name || !email || !password || !confirm){
       M.Toast.dismissAll();
       M.toast({html: 'All fields are mandatory', classes: 'rounded red'})
