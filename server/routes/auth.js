@@ -72,7 +72,7 @@ router.post("/signin", (req, res) => {
         res.json({token: token});
 
       }else{
-        res.json({message: "incorrect password"});
+        res.status(400).json({message: "incorrect password"});
       }
     })
     .catch((err) =>{
