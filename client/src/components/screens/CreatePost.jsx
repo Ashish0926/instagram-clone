@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreatePost = () => {
@@ -10,8 +10,7 @@ const CreatePost = () => {
   const publishPost = () => {
     let config = {
       headers: {
-        authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTEyOWQ2YjUwNTY5N2FiZTk2MjgyOSIsImlhdCI6MTY2NjI5Mzg0MH0.Idx-bq14BMvnd9D1i9D1xbu69_JCdA7X8Gvnlv1gDPs",
+        authorization: localStorage.getItem("token"),
       },
     };
 
@@ -26,12 +25,22 @@ const CreatePost = () => {
         config
       )
       .then((res) => {
+        M.Toast.dismissAll();
+        M.toast({ html: "posted successfully", classes: "rounded green" });
+        //setUrl("");
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  // this executes when url changes 
+  useEffect(() => {
+    if(url){
+      publishPost()
+    }
+  }, [url])
 
   const postDetails = () => {
     const data = new FormData();
@@ -43,7 +52,6 @@ const CreatePost = () => {
       .post("https://api.cloudinary.com/v1_1/dcvqxc3al/upload", data)
       .then((res) => {
         setUrl(res.data.secure_url);
-        publishPost();
       })
       .catch((err) => {
         console.log(err);

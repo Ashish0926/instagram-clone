@@ -36,11 +36,11 @@ const Login = () => {
       .then((res) => {
         M.Toast.dismissAll();
         M.toast({ html: "login successful", classes: "rounded green" });
-        //setToken(res.data.token);
+        console.log(res.data.token);
+        localStorage.setItem("token", res.data.token);
+        //localStorage.setItem("user", JSON.stringify(res.data.user));
         navigate("/");
         console.log(res);
-        //console.log(response.data);
-        // Handle data
       })
       .catch((error) => {
         console.log(error);
