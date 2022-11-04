@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../App";
 import axios from "axios";
 
 const validateEmail = (email) => {
@@ -11,6 +12,7 @@ const validateEmail = (email) => {
 };
 
 const Login = () => {
+  const { state, dispatch } = useContext(UserContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,11 +38,14 @@ const Login = () => {
       .then((res) => {
         M.Toast.dismissAll();
         M.toast({ html: "login successful", classes: "rounded green" });
-        console.log(res.data.token);
+        // console.log(res.data.token);
+        // console.log(res.config.data);
         localStorage.setItem("token", res.data.token);
-        //localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.config.data));
+        dispatch({ type: "USER", payload: res.config.data });
+
         navigate("/");
-        console.log(res);
+        //console.log(res);
       })
       .catch((error) => {
         console.log(error);
