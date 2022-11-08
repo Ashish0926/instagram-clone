@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    //console.log(token);
+    axios
+      .get("http://localhost:3000/allpost", {
+        headers: { authorization: "Bearer " + token },
+      })
+      .then((res) => {
+        //console.log(res.data.posts);
+        setData(res.data.posts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div
       className="home"
@@ -11,37 +28,27 @@ const Home = () => {
         flexDirection: "column",
       }}
     >
-      <div className="card home-card">
-        <h6 style={{ marginLeft: "15px", fontFamily: "roboto" }}>
-          Ashish Gupta
-        </h6>
-        <div className="card-image">
-          <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" />
-        </div>
-        <div className="card-content input-field">
-        <div>
-            <i class="material-icons">favorite_border</i>
+      {data.map((item) => {
+        //console.log(item.photo);
+        return (
+          <div className="card home-card" key={item}>
+            <h6 style={{ marginLeft: "15px", fontFamily: "roboto" }}>
+              {item.postedBy.name}
+            </h6>
+            <div className="card-image">
+              <img src={item.photo} />
+            </div>
+            <div className="card-content input-field">
+              <div>
+                <i class="material-icons">favorite_border</i>
+              </div>
+              <h6>{item.title}</h6>
+              <p>{item.body}</p>
+              <input type="text" placeholder="add a comment" />
+            </div>
           </div>
-          <h6>title</h6>
-          <p>this is amazing post</p>
-          <input type="text" placeholder="add a comment" />
-        </div>
-      </div>
-      <div className="card home-card">
-        <h6 style={{ marginLeft: "15px", fontFamily: "roboto" }} >Ashish Gupta</h6>
-        <div className="card-image">
-          <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" />
-        </div>
-        <div className="card-content input-field">
-          <div>
-            <i class="material-icons">favorite_border</i>
-          </div>
-
-          <h6>title</h6>
-          <p>this is amazing post</p>
-          <input type="text" placeholder="add a comment" />
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 };
