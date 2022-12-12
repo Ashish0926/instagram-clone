@@ -22,7 +22,7 @@ const Navbar = () => {
             localStorage.clear();
             dispatch({type: "CLEAR"})
             navigate("/login");
-          }}><i class="material-icons right">exit_to_app</i>LOGOUT</a>
+          }}><i className="material-icons right">exit_to_app</i>LOGOUT</a>
         </li>,
       ];
     } else {

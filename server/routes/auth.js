@@ -68,6 +68,7 @@ router.post("/signin", (req, res) => {
     .then((doMatch) => {
       if(doMatch) {
         // res.json({message: "successfully signed in"});
+        console.log(doMatch);
         const token = jwt.sign({id: savedUser._id}, JWT_KEY);
         res.json({token: token});
 
@@ -83,5 +84,6 @@ router.post("/signin", (req, res) => {
     console.log(err);
   })
 });
+
 
 module.exports = router;

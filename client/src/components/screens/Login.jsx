@@ -39,7 +39,7 @@ const Login = () => {
         M.Toast.dismissAll();
         M.toast({ html: "login successful", classes: "rounded green" });
         // console.log(res.data.token);
-        // console.log(res.config.data);
+        console.log(res.config);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.config.data));
         dispatch({ type: "USER", payload: res.config.data });

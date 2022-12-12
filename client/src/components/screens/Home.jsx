@@ -40,7 +40,7 @@ const Home = () => {
             </div>
             <div className="card-content input-field">
               <div>
-                <i class="material-icons">favorite_border</i>
+                <i className="material-icons">favorite_border</i>
               </div>
               <h6>{item.title}</h6>
               <p>{item.body}</p>
